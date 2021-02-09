@@ -13,15 +13,22 @@ int main(int argn, char* argv[]){
 }
 std::vector <int> permutar(int N){
   std::vector <int> permutacion;
-  for(int sep=10;sep<=(N);sep*=10){
-    int parte= N%(sep*10);
-    int numero=N-parte;
-    int valor=0;
-    for(int ii=0;ii<girar(parte).size();++ii){
-      valor=numero+girar(parte)[ii];
-      permutacion.push_back(valor);
+  permutacion.push_back(N);
+  int sep=100;
+  for(int kk=0;kk<4;++kk){
+    for(int ii=0;ii<kk;++ii){
+      int parte= permutacion[ii]%sep;
+      int numero=permutacion[ii]-parte;
+      int valor=0;
+      for(int jj=0;jj<girar(parte).size();++jj){
+	valor=numero+girar(parte)[jj];
+	permutacion.push_back(valor);
+      }
+      sep*=10;
     }
   }
+
+  
   return permutacion;
 
 }
