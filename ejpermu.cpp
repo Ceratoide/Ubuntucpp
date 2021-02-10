@@ -7,32 +7,38 @@ int main(int argn, char* argv[]){
   int N= std::atoi(argv[1]);
   std::vector <int> lista= permutar(N);
   for(int ii=0;ii<lista.size();++ii){
-    std::cout<<lista[ii]<<"\n";
+    std::cout<<(ii+1)<<"\t"<<lista[ii]<<"\n";
   }
   return 0;
 }
 std::vector <int> permutar(int N){
   std::vector <int> permutacion;
-  permutacion.push_back(N);
+  int P=N;
   int sep=100;
-  for(int kk=0;kk<4;++kk){
-    for(int ii=0;ii<kk;++ii){
-      int parte= permutacion[ii]%sep;
-      int numero=permutacion[ii]-parte;
-      int valor=0;
-      for(int jj=0;jj<girar(parte).size();++jj){
-	valor=numero+girar(parte)[jj];
+  int parte=P%sep;
+  int numero= P-parte;
+  int valor=0;
+  for(int ii=0;ii<girar(parte).size();++ii){
+    valor=numero+girar(parte)[ii];
+    permutacion.push_back(valor);
+  }
+  int fac=1;
+  int num=1;
+  for(sep=1000;sep<(P*10);sep*=10){
+    fac=fac*(num+1);
+    num=num+1;
+    for(int jj=0;jj<fac;++jj){
+      P=permutacion[jj];
+      parte=P%sep;
+      numero=P-parte;
+      for(int ii=0;ii<girar(parte).size()-1;++ii){
+	valor=numero+girar(parte)[ii];
 	permutacion.push_back(valor);
       }
-      sep*=10;
-    }
+    } 
   }
-
-  
   return permutacion;
-
 }
-
 
 
 std::vector <int> girar(int N){
