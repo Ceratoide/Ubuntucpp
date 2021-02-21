@@ -1,0 +1,2 @@
+%.x:%.cpp
+	g++ -std=c++17 -I $HOME/local/include -L $HOME/local/lib -L $HOME/local/lib/Matplot++ $< -lmatplot -lnodesoup -ljpeg -ltiff -lz -o $@
