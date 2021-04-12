@@ -1,0 +1,36 @@
+REPORTE
+
+Distribución de los arreglos en memoria:
+
+Los arreglos z y y son estaticos y se encuentran en el stack, aunque son contiguos en memoria individualmente es decir que forman bloques de memoria ocntinuos (en sus componentes), no hay seguridad de si entre ellos se tenga esta continuidad, mirando en gdb estos dos arreglos están casi contiguos (separados por un valor basura) y primero seencuentra a y y luego a z, lo que tiene sentido ya que fue (de los dos) el primero en ser declarado e inicializado; el arreglo x es dinamico, es decir que se ubica en el heap, y también conforma un bloque de memoria continuo.
+
+Intención original del código:
+
+La intención del código es comparar el estado incial y final de una serie de arreglos tras realizar cambios sobre ellos.
+
+¿Qué hace el código?
+
+Lo primero que debería hacer es declarar los tamaños de los arreglos, e inicializarlos a todos en 0, luego modificar el valor x[jj] y ii a NX, para posteriormente mostrar los primeros NZ datos del arreglo x, a todo el arreglo y intacto, y a una concatenación entre los arreglos z y y; luego todos los datos del arreglo x se ven igualados a ii es decir NX, y hace que cada elemento sea igual a su indice.
+Posterior a esto, se presentan los últimos NY valores del arreglo x, NZ valores del arreglo y y NX de la concatenación del arreglo z y y, luego todos los arreglos se ven igualados en sus componentes a constantes, las componentes de x y y se igualan a ii y las de z a jj, esto mientras el valor de jj sea menor al tamaño de z, en otro caso los arreglos se dejan intactos, al final se muestran los arreglos tras haber hecho estos cambios, y se devuelve la memoria pedida.
+
+Correcciones hechas al código:
+
+ACLARACIÓN: Siempre que me refiera a la linea de código, me refiero a la del original, salvo que especifique lo contrario.
+
+- Inicializacion de las variables ii,jj,kk en 0, del puntero en nullptr y de los arreglos en 0. (errores vistos en las lineas 7,8,9 -corregidos en las lineas 10,11,12 del nuevo)
+
+- Se reemplazó el for de la linea 16 por un codigo equivalente x[jj]=NX-1 y ii=NX, ya que no es necesario que la ii vaya uno a uno hasta NX, ya que estos valores no se usan, además ii=NX y no a NX-1 por la convencion ++ii puesta en el for.(linas 18, 19 del nuevo)
+
+- La instrucción de la linea 19 de pintar las primeros NZ datos del arreglo x, se corrigió poniendo la condición de que si el tamaño de x era mayor al de x, se limitara a pintar el arreglo x, esto debido a que se abria alcanzado el límite de datos que se pueden representar de x. (corregido en linea 22 del nuevo)
+
+- La orden de la linea 21 de pintar los primeros NZ+NY datos del arregló z los interprete como que si el programador quisiera pintar a las listas z y y concatenadas, arreglo que tendría tamaño NZ+NY, para esto se declaró una función auxiliar concatenar en la linea 4, y se inicializó en la linea 90 para generar un puntero zy que apunta a la concatenación de ambos arreglos.
+
+- En el for de la linea 24 se aclaró que el código era valido siempre y cuando jj<NX, para no salirnos del arreglo x.(corregido en linea 34 del nuevo)
+
+- Las impresiones dadas originalmente en las lineas 28,29 y 30, nunca se encuentran en los arreglos, interpreté este error como si el programador quisiera representar los ultimos NY datos del arreglo x (para la linea 28 por ejemplo)  asumiendo que el puntero se referencia en torno al ultimo dato del arreglo, cosa que para nada es así, para hacer la correcta aritmetica de punteros, primero desplacé el puntero al final del arreglo, para así poder representar los últimos NY datos de este, analogamente para la linea 29 con el arreglo y en las últimas NZ componentes. (corregido en lineas 42 y 47 del nuevo)
+
+- Para la linea 30, analogamente que para las anteriores se asumio que la intención era representar los últimos NX datos del arreglo no z, sino la concatenación de z con y, en este caso el error del programador fue que aunque se paró en el final del arreglo, no retrocedio los NX, para tomar en consideración esos datos, cosa que se corrigió restando NX al puntero hubicado al final del arreglo de la concatención. Además de claro actualizar al arreglo concatenado, limpiando la memoria y volviendo a cargar la función auxiliar. (corregido en linea 57 del nuevo)
+
+- Para el for de la linea 33 el error está en que si se cumple la condición jj<NZ, entonces el loop nunca se detiene, para solucionar esto asumiendo que las intenciones del programador eran las mejores, y que quería efectivamente que x[kk]=z[kk]=ii y y[kk]=jj; se colocó un break tal que una vez que todos los arreglos se hallan llenado, el loop se termine. (corregido en linea 62 del nuevo)
+
+- Finalmente en el código original no se estaba devolviendo la memoria pedida para el arreglo dinamico x, así que se realiza la devolución de esta memoria, a parte de la pedida para el arreglo de la concatenación. (corregido en lineas 78,79 del nuevo)
